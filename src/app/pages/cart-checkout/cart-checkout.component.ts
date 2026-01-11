@@ -31,7 +31,7 @@ export class CartCheckoutComponent implements OnInit {
 
   ngOnInit(): void {
     this.defaultAddress$ = this.http.get<any>(
-      `${environment.apiUrl}/api/addresses/default`
+      `${environment.apiUrl}api/addresses/default`
     );
   }
 
@@ -86,7 +86,7 @@ export class CartCheckoutComponent implements OnInit {
       return;
     }
 
-    this.http.post(`${environment.apiUrl}/api/orders/create`, payload).subscribe({
+    this.http.post(`${environment.apiUrl}api/orders/create`, payload).subscribe({
       next: (res: any) => this.router.navigate(['/order-confirmation', res.orderId]),
       error: (err) => {
         console.error('Order failed:', err);

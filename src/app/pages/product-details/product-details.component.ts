@@ -32,7 +32,7 @@ export class ProductDetailsComponent implements OnInit {
     const productId = this.route.snapshot.paramMap.get('id');
     console.log('Product ID:', productId);
 
-    this.http.get<any>(`${environment.apiUrl}/api/products/${productId}`).subscribe({
+    this.http.get<any>(`${environment.apiUrl}api/products/${productId}`).subscribe({
       next: (data) => {
         console.log('Product loaded:', data);
         this.product = data;
