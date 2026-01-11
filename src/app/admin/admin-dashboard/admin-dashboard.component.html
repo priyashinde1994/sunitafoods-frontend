@@ -1,0 +1,96 @@
+<div class="container mt-5">
+  <h2 class="text-center mb-4">🛠️ Admin Dashboard</h2>
+
+  <!-- Existing cards -->
+  <div class="row g-4 justify-content-center mb-5">
+    <div class="col-md-4">
+      <div class="card shadow-sm h-100 text-center">
+        <div class="card-body">
+          <h5 class="card-title">📦 Manage Products</h5>
+          <p class="card-text">View, edit, activate/deactivate, or delete products.</p>
+          <a routerLink="/admin/products" class="btn btn-primary w-100">Go to Products</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="card shadow-sm h-100 text-center">
+        <div class="card-body">
+          <h5 class="card-title">➕ Add Product</h5>
+          <p class="card-text">Add new products to your catalog.</p>
+          <a routerLink="/admin/add-product" class="btn btn-success w-100">Add Product</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="card shadow-sm h-100 text-center">
+        <div class="card-body">
+          <h5 class="card-title">📊 Reports (Future)</h5>
+          <p class="card-text">Analytics and sales reports (coming soon).</p>
+          <button class="btn btn-secondary w-100" disabled>Coming Soon</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Orders Section -->
+  <h3 class="mb-3">📑 Orders Management</h3>
+
+  <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
+
+  <table class="table table-bordered table-striped" *ngIf="orders && orders.length > 0">
+
+    <thead class="table-light">
+      <tr>
+        <th>ID</th>
+        <th>Customer</th>
+        <th>Email</th>
+        <th>Total Amount</th>
+        <th>Status</th>
+        <th>Created At</th>
+        <th>Change Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let order of orders">
+        <td>{{ order.id }}</td>
+        <td>{{ order.fullName }}</td>
+        <td>{{ order.email }}</td>
+        <td>₹{{ order.totalAmount }}</td>
+        <td>
+          <span
+            class="badge"
+            [ngClass]="{
+              'bg-warning': order.status === 'PENDING_COD',
+              'bg-info': order.status === 'OUT_FOR_DISPATCH',
+              'bg-success': order.status === 'DELIVERED',
+              'bg-danger': order.status === 'CANCELLED'
+            }"
+          >
+            {{ order.status }}
+          </span>
+        </td>
+        <td>{{ order.createdAt | date : 'short' }}</td>
+        <td>
+          <!-- Admin can change status -->
+          <select
+            class="form-select form-select-sm"
+            [(ngModel)]="order.status"
+            (ngModelChange)="changeStatus(order.id, $event)"
+          >
+            <option value="PENDING_COD">PENDING_COD</option>
+            <option value="OUT_FOR_DISPATCH">OUT_FOR_DISPATCH</option>
+            <option value="DELIVERED">DELIVERED</option>
+            <option value="CANCELLED">CANCELLED</option>
+          </select>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div *ngIf="orders && orders.length === 0" class="alert alert-info">
+  No orders available.
+</div>
+
+</div>

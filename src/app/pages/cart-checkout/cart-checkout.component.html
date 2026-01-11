@@ -1,0 +1,115 @@
+<div class="container-fluid mt-4">
+  <h2 class="mb-4 text-center">🛒 Your Shopping Cart</h2>
+
+  <div class="row gx-4 gy-4">
+    <!-- Cart Section -->
+    <div class="col-lg-8 col-md-7">
+      <div *ngIf="cartService.cartItems$ | async as items">
+        <!-- Empty state -->
+        <div *ngIf="items.length === 0" class="alert alert-info text-center">
+          Your cart is empty. Start shopping now!
+        </div>
+
+        <!-- Cart items -->
+        <div class="card mb-3 shadow-sm" *ngFor="let item of items">
+          <div class="row g-0 align-items-center">
+            <div class="col-md-3">
+              <img
+                [src]="apiUrl + item.product.imageUrl"
+                alt="{{ item.product.name }}"
+                class="img-fluid rounded-start product-image"
+              />
+            </div>
+            <div class="col-md-6">
+              <div class="card-body">
+                <h5 class="card-title">{{ item.product.name }}</h5>
+                <p class="mb-1 text-muted">Price: ₹{{ item.product.price }}</p>
+                <p class="mb-2 fw-bold">Subtotal: ₹{{ item.product.price * item.quantity }}</p>
+
+                <div class="d-flex align-items-center">
+                  <button class="btn btn-sm btn-outline-secondary" (click)="decrement(item)">
+                    −
+                  </button>
+                  <span class="mx-2">{{ item.quantity }}</span>
+                  <button class="btn btn-sm btn-outline-secondary" (click)="increment(item)">
+                    +
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3 text-end pe-3">
+              <button class="btn btn-danger btn-sm" (click)="removeItem(item.id)">Remove</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Checkout Section -->
+    <div class="col-lg-4 col-md-5">
+      <div class="card shadow-sm p-3">
+        <h4 class="mb-3">Checkout</h4>
+
+        <div *ngIf="defaultAddress$ | async as defaultAddress; else noAddress">
+          <div class="address-card p-3 border rounded bg-light border-success mb-3">
+            <p>
+              <strong>{{ defaultAddress.fullName }}</strong> - {{ defaultAddress.phone }}
+            </p>
+            <p>{{ defaultAddress.addressLine1 }} {{ defaultAddress.addressLine2 }}</p>
+            <p>
+              {{ defaultAddress.city }}, {{ defaultAddress.state }} {{ defaultAddress.zipcode }}
+            </p>
+            <p>{{ defaultAddress.country }}</p>
+            <span class="badge bg-success">Default</span>
+            <div class="mt-2">
+              <a routerLink="/profile" class="btn btn-link p-0">Change</a>
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Payment Method</label>
+            <select class="form-select" [(ngModel)]="paymentMethod">
+              <option value="COD">Cash on Delivery</option>
+            </select>
+          </div>
+
+          <div *ngIf="cartService.total$ | async as total">
+            <h5 class="mb-3">Total: ₹{{ total }}</h5>
+            <button class="btn btn-success w-100" (click)="placeOrder(defaultAddress)">
+              Place Order
+            </button>
+          </div>
+        </div>
+
+        <ng-template #noAddress>
+          <div class="text-muted mt-3">
+            No default address found. Please set one in your profile.
+          </div>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+  <!-- Summary Card -->
+  <div class="row mt-4">
+    <div class="col-12">
+      <div class="card shadow-sm">
+        <div
+          class="card-body d-flex flex-column flex-md-row justify-content-between align-items-center"
+        >
+          <div *ngIf="cartService.itemCount$ | async as count">
+            <h5 class="mb-2 mb-md-0">
+              Total: {{ cartService.total$ | async | currency : 'INR' : 'symbol' : '1.0-0' }} ({{
+                count
+              }}
+              {{ getItemLabel(count) }})
+            </h5>
+          </div>
+          <div class="d-flex flex-column flex-md-row gap-2">
+            <a routerLink="/" class="btn btn-outline-secondary">Continue Shopping</a>
+            <button class="btn btn-warning" (click)="clearCart()">Clear Cart</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

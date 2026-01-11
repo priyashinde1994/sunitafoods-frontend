@@ -1,0 +1,49 @@
+<div class="container mt-4">
+  <h2 class="mb-4 text-center">✏️ Edit Product</h2>
+
+  <!-- ✅ Wrap form in ng-container -->
+  <ng-container *ngIf="product; else loading">
+    <form (ngSubmit)="updateProduct()">
+      <div class="mb-3">
+        <label>Name</label>
+        <input type="text" [(ngModel)]="product.name" name="name" class="form-control" required>
+      </div>
+
+      <div class="mb-3">
+        <label>Description</label>
+        <textarea [(ngModel)]="product.description" name="description" class="form-control"></textarea>
+      </div>
+
+      <div class="mb-3">
+        <label>Price</label>
+        <input type="number" [(ngModel)]="product.price" name="price" class="form-control" required>
+      </div>
+
+      <div class="mb-3">
+        <label>Image URL</label>
+        <input type="text" [(ngModel)]="product.imageUrl" name="imageUrl" class="form-control">
+        <!-- ✅ Image preview -->
+        <div class="mt-2" *ngIf="product.imageUrl">
+          <img [src]="getImageUrl(product.imageUrl)" alt="Preview" class="img-thumbnail" width="120">
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label>Status</label>
+        <select [(ngModel)]="product.active" name="active" class="form-select">
+          <option [ngValue]="true">Active</option>
+          <option [ngValue]="false">Inactive</option>
+        </select>
+      </div>
+
+     <button type="submit" class="btn btn-primary">Update</button>
+<button type="button" class="btn btn-secondary ms-2" (click)="cancel()">Cancel</button>
+
+    </form>
+  </ng-container>
+
+  <!-- ✅ Loading state -->
+  <ng-template #loading>
+    <div class="alert alert-info mt-4">Loading product details...</div>
+  </ng-template>
+</div>

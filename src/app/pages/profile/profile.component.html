@@ -1,0 +1,65 @@
+<div class="profile-container" *ngIf="user$ | async as user">
+  <div class="card">
+    <h2 class="profile-title">👤 My Profile</h2>
+
+    <!-- User Info -->
+    <div class="profile-info">
+      <p><strong>Full Name:</strong> {{ user.name }}</p>
+      <p><strong>Email:</strong> {{ user.email }}</p>
+      <p><strong>Mobile:</strong> {{ user.phone }}</p>
+    </div>
+
+    <!-- Saved Addresses -->
+    <h3>🏠 Saved Addresses</h3>
+    <div *ngIf="addresses$ | async as addresses">
+      <div *ngFor="let addr of addresses" 
+           class="address-card mb-3 p-3 border rounded" 
+           [class.border-success]="addr.isDefault" 
+           [class.bg-light]="addr.isDefault">
+
+        <div class="d-flex justify-content-between align-items-center">
+          <div>
+            <p class="mb-1"><strong>{{ addr.fullName }}</strong> - {{ addr.phone }}</p>
+            <p class="mb-1">{{ addr.addressLine1 }} {{ addr.addressLine2 }}</p>
+            <p class="mb-1">{{ addr.city }}, {{ addr.state }} {{ addr.zipcode }}</p>
+            <p class="mb-1">{{ addr.country }}</p>
+
+            <!-- Default Badge -->
+            <span *ngIf="addr.isDefault" class="badge bg-success">✅ Default Address</span>
+          </div>
+
+          <div class="text-end">
+            <!-- Disable button if already default -->
+            <button 
+              (click)="setDefaultAddress(addr)" 
+              class="btn btn-primary me-2" 
+              [disabled]="addr.isDefault">
+              Set Default
+            </button>
+            <button (click)="deleteAddress(addr.id)" class="btn btn-danger">Delete</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Add New Address Form -->
+    <h4>Add New Address</h4>
+    <form [formGroup]="addressForm" (ngSubmit)="addAddress()" class="address-form">
+      <input formControlName="fullName" placeholder="Full Name" class="form-control mb-2">
+      <input formControlName="phone" placeholder="Phone" class="form-control mb-2">
+      <input formControlName="addressLine1" placeholder="Address Line 1" class="form-control mb-2">
+      <input formControlName="addressLine2" placeholder="Address Line 2" class="form-control mb-2">
+      <input formControlName="city" placeholder="City" class="form-control mb-2">
+      <input formControlName="state" placeholder="State" class="form-control mb-2">
+      <input formControlName="zipcode" placeholder="ZIP Code" class="form-control mb-2">
+      <input formControlName="country" placeholder="Country" class="form-control mb-2">
+      <button type="submit" class="btn btn-success">Add Address</button>
+    </form>
+
+    <!-- Actions -->
+    <div class="actions mt-3">
+      <a routerLink="/my-orders" class="btn btn-primary me-2">📦 View My Orders</a>
+      <a routerLink="/cart-checkout" class="btn btn-secondary">🛒 View Cart</a>
+    </div>
+  </div>
+</div>

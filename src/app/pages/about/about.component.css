@@ -1,0 +1,97 @@
+/* Background with blur */
+.about-bg {
+  position: relative;
+  min-height: 100vh;
+  /* background: url('/assets/images/masala.jpg') center/cover no-repeat; */
+  overflow: hidden;
+}
+
+.about-bg::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: inherit;
+  filter: blur(10px);
+  transform: scale(1.06); /* avoids edge artifacts */
+  z-index: 0;
+}
+
+/* Overlay ensures readability */
+.about-overlay {
+  position: relative;
+  z-index: 1;
+  background: rgba(0,0,0,0.55); /* semi-transparent dark overlay */
+  min-height: 100vh;
+  padding: 3rem 1rem;
+}
+
+/* Hero Section */
+.hero {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.hero-title {
+  color: #fff;
+  font-size: 2.6rem;
+  font-weight: 700;
+  margin-bottom: 0.75rem;
+}
+
+.hero-subtitle {
+  color: #f2f2f2;
+  font-size: 1.2rem;
+}
+
+/* Section Styling */
+.section {
+  margin-top: 2.5rem;
+}
+
+.section-title {
+  text-align: center;
+  font-weight: 700;
+  color: #ffd36b; /* warm spice tone */
+  margin-bottom: 1.25rem;
+}
+
+.section-text {
+  color: #eaeaea;
+  font-size: 1.05rem;
+  line-height: 1.7;
+}
+
+/* Story Text beside image */
+.story-text {
+  font-size: 1.1rem;
+  line-height: 1.7;
+  color: #f0f0f0;
+}
+
+/* Values titles */
+.value-title {
+  color: #ffe08a;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+/* Image styling */
+.img-fluid {
+  border-radius: 12px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.35);
+}
+
+/* Responsive tweaks */
+@media (max-width: 768px) {
+  .hero-title { font-size: 2.1rem; }
+  .hero-subtitle { font-size: 1.05rem; }
+  .col-md-6 {
+    flex: 0 0 100%;
+    max-width: 100%;
+    text-align: center;
+  }
+  .story-text {
+    margin-top: 1rem;
+  }
+}
+

@@ -1,0 +1,33 @@
+<div class="confirmation-container" *ngIf="orderDetails$ | async as order">
+  <div class="card">
+    <h2 class="success-title">🎉 Order Confirmed!</h2>
+    <p class="thank-you">
+      Thank you for your purchase, <strong>{{ order.fullName }}</strong>.
+    </p>
+
+    <div class="order-summary">`
+      <p><strong>Order ID:</strong> {{ order.id }}</p>
+      <p><strong>Status:</strong> {{ order.status }}</p>
+      <p><strong>Total Amount:</strong> ₹{{ order.totalAmount }}</p>
+      <p><strong>Payment Method:</strong> {{ order.paymentMethod }}</p>
+      <p>
+        <strong>Shipping Address:</strong>
+        {{ order.address }}, {{ order.city }} - {{ order.zip }}
+      </p>
+    </div>
+
+    <div class="order-items" *ngIf="order.items?.length">
+      <h3>🛍️ Items in this order</h3>
+      <ul>
+        <li *ngFor="let item of order.items">
+          {{ item.productName }} — Qty: {{ item.quantity }} — ₹{{ item.price }}
+        </li>
+      </ul>
+    </div>
+
+    <div class="actions">
+      <a routerLink="/my-orders" class="btn btn-primary">📦 View My Orders</a>
+      <a routerLink="/" class="btn btn-secondary">🛒 Continue Shopping</a>
+    </div>
+  </div>
+</div>

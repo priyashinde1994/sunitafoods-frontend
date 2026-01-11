@@ -1,0 +1,47 @@
+<div class="orders-container">
+  <h2>📦 My Orders</h2>
+
+  <div class="orders-grid" *ngIf="orders$ | async as orders; else noOrders">
+    <div class="order-card" *ngFor="let order of orders">
+      <div class="order-header">
+        <h3>Order #{{ order.id }}</h3>
+        <span class="status" [ngClass]="order.status.toLowerCase()">
+          {{ order.status | titlecase }}
+        </span>
+      </div>
+
+      <div class="order-body">
+        <p><strong>Total:</strong> ₹{{ order.totalAmount }}</p>
+        <p><strong>Date:</strong> {{ order.createdAt | date:'medium' }}</p>
+        <p><strong>Payment:</strong> {{ order.paymentMethod }}</p>
+        <p><strong>Customer:</strong> {{ order.fullName }}</p>
+        <p><strong>Address:</strong> {{ order.address }}, {{ order.city }} - {{ order.zip }}</p>
+      </div>
+
+      <!-- Delivery Progress Tracker -->
+      <div class="order-progress">
+        <div class="step" [class.active]="order.status === 'PENDING_COD'">PENDING_COD</div>
+        <div class="step" [class.active]="order.status === 'OUT_FOR_DISPATCH'">OUT_FOR_DISPATCH</div>
+        <div class="step" [class.active]="order.status === 'DELIVERED'">DELIVERED</div>
+      </div>
+
+      <!-- ✅ Changed: removed ?. -->
+      <div class="order-items" *ngIf="order.items.length > 0">
+        <h4>🛍️ Items</h4>
+        <ul>
+          <li *ngFor="let item of order.items">
+            {{ item.productName }} — Qty: {{ item.quantity }} — ₹{{ item.price }}
+          </li>
+        </ul>
+      </div>
+
+      <!-- <div class="order-actions"> -->
+        <!-- <button [routerLink]="['/order', order.id]" class="btn btn-primary">View Details</button> -->
+      <!-- </div> -->
+    </div>
+  </div>
+
+  <ng-template #noOrders>
+    <p>No orders found.</p>
+  </ng-template>
+</div>

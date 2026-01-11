@@ -1,0 +1,37 @@
+import { Routes } from '@angular/router';
+import { HomeComponent } from './pages/home/home.component';
+import { LoginComponent } from './auth/login/login.component';
+import { RegisterComponent } from './auth/register/register.component';
+import { ProductDetailsComponent } from './pages/product-details/product-details.component';
+import { OrderSuccessComponent } from './pages/order-success/order-success.component';
+import { MyOrdersComponent } from './pages/my-orders/my-orders.component';
+import { AdminLoginComponent } from './admin/admin-login/admin-login.component';
+import { AddProductComponent } from './admin/add-product/add-product.component';
+import { EditProductComponent } from './admin/edit-product/edit-product.component';
+import { OrdersComponent } from './admin/orders/orders.component';
+import { OrderConfirmationComponent } from './pages/order-confirmation/order-confirmation.component';
+import { ProfileComponent } from './pages/profile/profile.component';
+import { CartCheckoutComponent } from './pages/cart-checkout/cart-checkout.component';
+import { AboutComponent } from './pages/about/about.component';
+import { AdminDashboardComponent } from './admin/admin-dashboard/admin-dashboard.component';
+import { AdminProductsComponent } from './admin/admin-products/admin-products.component';
+
+export const routes: Routes = [
+  { path: '', component: HomeComponent },
+  { path: 'home', component: HomeComponent },
+  { path: 'login', component: LoginComponent },
+  { path: 'register', component: RegisterComponent },
+  { path: 'product/:id', component: ProductDetailsComponent },
+  { path: 'cart-checkout', component: CartCheckoutComponent },
+  { path: 'about', component: AboutComponent },
+  { path: 'order-success/:id', component: OrderSuccessComponent },
+  { path: 'order-confirmation/:orderId', component: OrderConfirmationComponent },
+  { path: 'my-orders', component: MyOrdersComponent },
+  { path: 'admin/dashboard', component: AdminDashboardComponent },
+  { path: 'admin/login', component: AdminLoginComponent },
+  { path: 'admin/products', component: AdminProductsComponent },
+  { path: 'admin/add-product', component: AddProductComponent },
+  { path: 'admin/edit-product/:id', component: EditProductComponent },
+  { path: 'admin/orders', component: OrdersComponent },
+  { path: 'profile', component: ProfileComponent }
+];

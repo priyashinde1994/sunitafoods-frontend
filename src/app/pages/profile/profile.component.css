@@ -1,0 +1,114 @@
+.profile-container {
+  margin: 60px auto;
+  max-width: 840px; /* widened for breathing room */
+  padding: 32px;
+}
+
+.card {
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 32px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.profile-title {
+  margin-bottom: 24px;
+  font-size: 26px;
+  font-weight: bold;
+  text-align: center;
+}
+
+.profile-info p {
+  margin: 10px 0;
+  font-size: 16px;
+}
+
+.address-card {
+  border: 1px solid #eee;
+  padding: 16px;
+  margin-bottom: 16px;
+  border-radius: 8px;
+  background: #fdfdfd;
+}
+
+.address-card.border-success {
+  border-width: 2px;
+}
+
+.address-card .badge {
+  font-size: 0.85rem;
+  padding: 6px 12px;
+  margin-top: 8px;
+}
+
+.address-form {
+  margin-top: 30px;
+}
+
+.address-form input {
+  width: 100%;
+  padding: 10px;
+  font-size: 15px;
+}
+
+.actions {
+  margin-top: 30px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: center;
+}
+
+.btn {
+  padding: 10px 18px;
+  border-radius: 6px;
+  font-size: 15px;
+  min-width: 140px;
+}
+
+@media (max-width: 768px) {
+  .profile-container {
+    padding: 16px;
+    margin: 20px auto;
+  }
+
+  .card {
+    padding: 20px;
+  }
+
+  .profile-title {
+    font-size: 20px;
+    text-align: center;
+  }
+
+  .profile-info p {
+    font-size: 14px;
+  }
+
+  .address-card {
+    padding: 12px;
+    font-size: 14px;
+  }
+
+  .address-card .badge {
+    font-size: 0.8rem;
+    padding: 4px 8px;
+  }
+
+  .address-form input {
+    font-size: 14px;
+    padding: 8px;
+  }
+
+  .actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .btn {
+    width: 100%;
+    margin-bottom: 10px;
+    font-size: 14px;
+  }
+}
