@@ -32,12 +32,14 @@
           <td>{{ p.description }}</td>
           <td>₹{{ p.price }}</td>
           <td>
-            <img *ngIf="p.imageUrl"
-                 [src]="getImageUrl(p.imageUrl)"
-                 alt="{{ p.name }}"
-                 width="60"
-                 height="60"
-                 class="img-thumbnail"/>
+            <img
+              *ngIf="p.imageUrl"
+              [src]="getImageUrl(p.imageUrl)"
+              alt="{{ p.name }}"
+              width="60"
+              height="60"
+              class="img-thumbnail"
+            />
           </td>
           <td>
             <span class="badge" [ngClass]="p.active ? 'bg-success' : 'bg-secondary'">
@@ -47,11 +49,26 @@
           <td>
             <button class="btn btn-sm btn-primary me-1" (click)="editProduct(p.id)">Edit</button>
             <button class="btn btn-sm btn-danger me-1" (click)="deleteProduct(p.id)">Delete</button>
-            <button *ngIf="!p.active" class="btn btn-sm btn-success" (click)="activateProduct(p.id)">Activate</button>
-            <button *ngIf="p.active" class="btn btn-sm btn-warning" (click)="deactivateProduct(p.id)">Deactivate</button>
+            <button
+              *ngIf="!p.active"
+              class="btn btn-sm btn-success"
+              (click)="activateProduct(p.id)"
+            >
+              Activate
+            </button>
+            <button
+              *ngIf="p.active"
+              class="btn btn-sm btn-warning"
+              (click)="deactivateProduct(p.id)"
+            >
+              Deactivate
+            </button>
           </td>
         </tr>
       </tbody>
     </table>
   </ng-container>
+  <div class="mt-3">
+    <button class="btn btn-secondary" (click)="goToDashboard()">← Back to Dashboard</button>
+  </div>
 </div>

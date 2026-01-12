@@ -45,4 +45,11 @@ export class AuthService {
     localStorage.removeItem(this.tokenKey);
     localStorage.removeItem(this.userKey);
   }
+
+  getRole(): string | null {
+  const user = this.getUser();
+  return user ? user.role : null;
 }
+
+}
+

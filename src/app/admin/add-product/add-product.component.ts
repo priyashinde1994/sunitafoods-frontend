@@ -27,6 +27,11 @@ export class AddProductComponent {
     private router: Router
   ) {}
 
+  goToDashboard(): void {
+  this.router.navigate(['/admin/dashboard']);
+}
+
+
   // Called when form is submitted
   addProduct(): void {
     this.adminService.add(this.product).subscribe({

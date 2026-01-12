@@ -1,11 +1,10 @@
 import { Component } from '@angular/core';
-import { ActivatedRoute, RouterModule } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
-import { CommonModule } from '@angular/common';
-import { NgIf, NgFor } from '@angular/common';
+import { CommonModule, NgIf, NgFor } from '@angular/common';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
-
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-order-confirmation',
@@ -17,10 +16,20 @@ import { environment } from '../../../environments/environment';
 export class OrderConfirmationComponent {
   orderDetails$!: Observable<any>;
 
-  constructor(private route: ActivatedRoute, private http: HttpClient) {}
+  constructor(
+    private route: ActivatedRoute,
+    private http: HttpClient,
+    public auth: AuthService,
+    private router: Router   // ✅ inject Router
+  ) {}
 
   ngOnInit(): void {
     const orderId = Number(this.route.snapshot.paramMap.get('orderId'));
     this.orderDetails$ = this.http.get(`${environment.apiUrl}api/orders/${orderId}`);
+  }
+
+  logout(): void {
+    this.auth.logout();
+    this.router.navigate(['/login']);
   }
 }

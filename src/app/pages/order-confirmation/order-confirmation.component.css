@@ -87,3 +87,56 @@
   from { opacity: 0; transform: translateY(20px); }
   to { opacity: 1; transform: translateY(0); }
 }
+
+
+.navbar-custom {
+  background: linear-gradient(90deg, #ff6f00, #ff3d00);
+  box-shadow: 0 3px 8px rgba(0,0,0,0.15);
+  padding: 0.8rem 1.5rem;
+  backdrop-filter: blur(4px);
+}
+
+.navbar-custom .navbar-brand {
+  font-weight: 700;
+  font-size: 1.3rem;
+  color: #fff;
+}
+
+.navbar-custom .nav-link {
+  color: #fff;
+  font-weight: 500;
+  margin-left: 1rem;
+  transition: color 0.3s ease, transform 0.2s ease;
+}
+
+.navbar-custom .nav-link:hover {
+  color: #ffe0cc;
+  transform: translateY(-2px);
+}
+
+/* Background for order confirmation */
+.order-background {
+  background-image: url('/assets/images/masala.jpg'); /* 👈 replace with your image path */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  min-height: 100vh;
+  width: 100%;
+}
+
+/* Overlay for readability */
+.order-overlay {
+  background-color: rgba(255, 255, 255, 0.85); /* light overlay */
+  min-height: 100vh;
+  width: 100%;
+  padding: 2rem;
+  border-radius: 12px;
+}
+
+/* Confirmation card styling */
+.confirmation-container .card {
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  padding: 1.5rem;
+  background-color: #fff;
+}

@@ -1,33 +1,78 @@
-<div class="confirmation-container" *ngIf="orderDetails$ | async as order">
-  <div class="card">
-    <h2 class="success-title">🎉 Order Confirmed!</h2>
-    <p class="thank-you">
-      Thank you for your purchase, <strong>{{ order.fullName }}</strong>.
-    </p>
+<div class="order-background">
+  <div class="order-overlay w-100">
 
-    <div class="order-summary">`
-      <p><strong>Order ID:</strong> {{ order.id }}</p>
-      <p><strong>Status:</strong> {{ order.status }}</p>
-      <p><strong>Total Amount:</strong> ₹{{ order.totalAmount }}</p>
-      <p><strong>Payment Method:</strong> {{ order.paymentMethod }}</p>
-      <p>
-        <strong>Shipping Address:</strong>
-        {{ order.address }}, {{ order.city }} - {{ order.zip }}
-      </p>
+    <!-- Premium Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-custom">
+      <div class="container-fluid">
+        <a class="navbar-brand" routerLink="/">Sunita Foods</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+          data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false"
+          aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item"><a class="nav-link" routerLink="/">Home</a></li>
+            <li class="nav-item"><a class="nav-link" routerLink="/cart-checkout">Cart</a></li>
+            <li class="nav-item"><a class="nav-link" routerLink="/about">About</a></li>
+
+            <!-- Show Login/Register if not logged in -->
+            <li class="nav-item" *ngIf="!auth.isLoggedIn()">
+              <a class="nav-link" routerLink="/login">Login</a>
+            </li>
+            <li class="nav-item" *ngIf="!auth.isLoggedIn()">
+              <a class="nav-link" routerLink="/register">Register</a>
+            </li>
+
+            <!-- Show user + Logout if logged in -->
+            <li class="nav-item dropdown" *ngIf="auth.isLoggedIn()">
+              <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                {{ auth.getUser()?.name || 'User' }}
+              </a>
+              <ul class="dropdown-menu dropdown-menu-end">
+                <li><a class="dropdown-item" routerLink="/profile">Profile</a></li>
+                <li><a class="dropdown-item" (click)="logout()">Logout</a></li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Order Confirmation Section -->
+    <div class="confirmation-container mt-4" *ngIf="orderDetails$ | async as order">
+      <div class="card">
+        <h2 class="success-title">🎉 Order Confirmed!</h2>
+        <p class="thank-you">
+          Thank you for your purchase, <strong>{{ order.fullName }}</strong>.
+        </p>
+
+        <div class="order-summary">
+          <p><strong>Order ID:</strong> {{ order.id }}</p>
+          <p><strong>Status:</strong> {{ order.status }}</p>
+          <p><strong>Total Amount:</strong> ₹{{ order.totalAmount }}</p>
+          <p><strong>Payment Method:</strong> {{ order.paymentMethod }}</p>
+          <p>
+            <strong>Shipping Address:</strong>
+            {{ order.address }}, {{ order.city }} - {{ order.zip }}
+          </p>
+        </div>
+
+        <div class="order-items" *ngIf="order.items?.length">
+          <h3>🛍️ Items in this order</h3>
+          <ul>
+            <li *ngFor="let item of order.items">
+              {{ item.productName }} — Qty: {{ item.quantity }} — ₹{{ item.price }}
+            </li>
+          </ul>
+        </div>
+
+        <div class="actions">
+          <a routerLink="/my-orders" class="btn btn-primary">📦 View My Orders</a>
+          <a routerLink="/" class="btn btn-secondary">🛒 Continue Shopping</a>
+        </div>
+      </div>
     </div>
 
-    <div class="order-items" *ngIf="order.items?.length">
-      <h3>🛍️ Items in this order</h3>
-      <ul>
-        <li *ngFor="let item of order.items">
-          {{ item.productName }} — Qty: {{ item.quantity }} — ₹{{ item.price }}
-        </li>
-      </ul>
-    </div>
-
-    <div class="actions">
-      <a routerLink="/my-orders" class="btn btn-primary">📦 View My Orders</a>
-      <a routerLink="/" class="btn btn-secondary">🛒 Continue Shopping</a>
-    </div>
-  </div>
-</div>
+  </div> <!-- ✅ close order-overlay -->
+</div> <!-- ✅ close order-background -->

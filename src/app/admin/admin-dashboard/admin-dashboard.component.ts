@@ -2,137 +2,85 @@ import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AdminProductService } from '../../services/admin-product.service';
 import { FormsModule } from '@angular/forms';
-import { CommonModule } from '@angular/common'; // ✅ import CommonModule
+import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { Observable } from 'rxjs';
 import { Order } from '../../services/models/order.model';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import {  MatDialogModule } from '@angular/material/dialog';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-admin-dashboard',
   standalone: true,
   templateUrl: './admin-dashboard.component.html',
-  imports: [FormsModule, RouterModule, CommonModule],
+  imports: [
+    FormsModule,
+    RouterModule,
+    CommonModule,
+    MatSnackBarModule, // ✅ Required for snackbars
+    MatDialogModule    // ✅ Required for dialogs
+  ],
   styleUrls: ['./admin-dashboard.component.css'],
 })
 export class AdminDashboardComponent implements OnInit {
-  products: any[] = [];
   error: string | null = null;
-  
-  
-orders: Order[] = []; 
+  orders: Order[] = [];
 
 
-  constructor(private adminService: AdminProductService, private router: Router,  private cd: ChangeDetectorRef) {}
+  constructor(
+    private adminService: AdminProductService,
+    private router: Router,
+    private auth: AuthService,
+    private snackBar: MatSnackBar,
+    private cd: ChangeDetectorRef
+  ) {}
 
   ngOnInit(): void {
-    this.loadProducts();
     this.loadOrders();
   }
+  
 
-  // -------------------------
-  // Load all products
-  // -------------------------
-  loadProducts(): void {
-    this.adminService.list().subscribe({
-      next: (res: any[]) => {
-        this.products = res;
-      },
-      error: (err: any) => {
-        console.error('Failed to load products', err);
-        this.error = 'Could not load products';
-      },
-    });
-  }
-
-  // -------------------------
-  // Add product (navigate to add form)
-  // -------------------------
   addProduct(): void {
     this.router.navigate(['/admin/add-product']);
+    this.snackBar.open('➡️ Redirected to Add Product form', 'Close', { duration: 3000 });
   }
 
   // -------------------------
-  // Edit product (navigate to edit form)
+  // Load orders
   // -------------------------
-  editProduct(id: number): void {
-    this.router.navigate([`/admin/edit-product/${id}`]);
-  }
-
-  // -------------------------
-  // Delete product
-  // -------------------------
-  deleteProduct(id: number): void {
-    if (confirm('Are you sure you want to delete this product?')) {
-      this.adminService.delete(id).subscribe({
-        next: () => {
-          alert('Product deleted');
-          this.loadProducts();
-        },
-        error: (err) => {
-          console.error('Delete failed', err);
-          alert('Failed to delete product');
-        },
-      });
-    }
-  }
-
-  // -------------------------
-  // Activate product
-  // -------------------------
-  activateProduct(id: number): void {
-    this.adminService.activate(id).subscribe({
-      next: () => {
-        alert('Product activated');
-        this.loadProducts();
-      },
-      error: (err) => {
-        console.error('Activation failed', err);
-        alert('Failed to activate product');
-      },
-    });
-  }
-
-  // -------------------------
-  // Deactivate product
-  // -------------------------
-  deactivateProduct(id: number): void {
-    this.adminService.deactivate(id).subscribe({
-      next: () => {
-        alert('Product deactivated');
-        this.loadProducts();
-      },
-      error: (err) => {
-        console.error('Deactivation failed', err);
-        alert('Failed to deactivate product');
-      },
-    });
-  }
-
   loadOrders(): void {
-  this.adminService.getOrders().subscribe({
-    next: (res: Order[]) => {
-      this.orders = res;   // ✅ backend already returns an array
-      console.log('Orders loaded:', this.orders);
-      this.cd.detectChanges(); // ✅ force Angular to refresh view
-    },
-    error: (err) => {
-      console.error('Failed to load orders', err);
-      this.error = 'Could not load orders';
-    },
-  });
-}
+    this.adminService.getOrders().subscribe({
+      next: (res: Order[]) => {
+        this.orders = res;
+        this.cd.detectChanges();
+      },
+      error: (err) => {
+        console.error('Failed to load orders', err);
+        this.error = 'Could not load orders';
+      },
+    });
+  }
 
-
+  // -------------------------
+  // Change order status
+  // -------------------------
   changeStatus(orderId: number, newStatus: string): void {
     this.adminService.updateOrderStatus(orderId, newStatus).subscribe({
       next: () => {
-        alert(`Order ${orderId} updated to ${newStatus}`);
+        this.snackBar.open(`✅ Order ${orderId} updated to ${newStatus}`, 'Close', { duration: 3000 });
         this.loadOrders();
       },
       error: (err) => {
         console.error('Failed to update status', err);
-        alert('Failed to update order status');
+        this.snackBar.open('❌ Failed to update order status', 'Close', { duration: 3000 });
       },
     });
   }
+
+  logout() {
+    this.auth.logout();
+    this.router.navigate(['/login']);
+  }
+
 }
+

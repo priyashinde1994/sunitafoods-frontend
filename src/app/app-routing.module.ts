@@ -8,7 +8,6 @@ import { ProductDetailsComponent } from './pages/product-details/product-details
 
 import { OrderSuccessComponent } from './pages/order-success/order-success.component';
 import { MyOrdersComponent } from './pages/my-orders/my-orders.component';
-import { AdminLoginComponent } from './admin/admin-login/admin-login.component';
 import { AddProductComponent } from './admin/add-product/add-product.component';
 import { EditProductComponent } from './admin/edit-product/edit-product.component';
 import { OrdersComponent } from './admin/orders/orders.component';
@@ -32,7 +31,7 @@ export const routes: Routes = [
   { path: 'order-confirmation/:orderId', component: OrderConfirmationComponent },
   { path: 'my-orders', component: MyOrdersComponent },
   {path:'admin/dashboard', component: AdminDashboardComponent},
-  { path: 'admin/login', component: AdminLoginComponent },
+  { path: 'admin/login', component: LoginComponent },
   { path: 'admin/products', component: AdminProductsComponent},
   { path: 'admin/add-product', component: AddProductComponent },
   { path: 'admin/edit-product/:id', component: EditProductComponent },
