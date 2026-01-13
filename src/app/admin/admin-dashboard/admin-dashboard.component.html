@@ -1,10 +1,8 @@
 <div class="container mt-5">
-  <h2 class="text-center mb-4">🛠️ Admin Dashboard</h2> <div class="d-flex justify-content-end mb-3">
-  <button class="btn btn-outline-danger" (click)="logout()">
-    🔒 Logout
-  </button>
-</div>
-
+  <h2 class="text-center mb-4">🛠️ Admin Dashboard</h2>
+  <div class="d-flex justify-content-end mb-3">
+    <button class="btn btn-outline-danger" (click)="logout()">🔒 Logout</button>
+  </div>
 
   <!-- Existing cards -->
   <div class="row g-4 justify-content-center mb-5">
@@ -45,15 +43,18 @@
   <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
 
   <table class="table table-bordered table-striped" *ngIf="orders && orders.length > 0">
-
     <thead class="table-light">
       <tr>
         <th>ID</th>
         <th>Customer</th>
         <th>Email</th>
+        <th>Phone</th>
+        <!-- ✅ new column -->
         <th>Total Amount</th>
         <th>Status</th>
         <th>Created At</th>
+        <th>Address</th>
+        <th>Items</th>
         <th>Change Status</th>
       </tr>
     </thead>
@@ -62,6 +63,8 @@
         <td>{{ order.id }}</td>
         <td>{{ order.fullName }}</td>
         <td>{{ order.email }}</td>
+        <td>{{ order.phone }}</td>
+        <!-- ✅ display phone -->
         <td>₹{{ order.totalAmount }}</td>
         <td>
           <span
@@ -77,8 +80,15 @@
           </span>
         </td>
         <td>{{ order.createdAt | date : 'short' }}</td>
+        <td>{{ order.address }}, {{ order.city }} - {{ order.zip }}</td>
         <td>
-          <!-- Admin can change status -->
+          <ul *ngIf="order.items.length>0">
+            <li *ngFor="let item of order.items">
+              {{ item.productName }} — Qty: {{ item.quantity }} — ₹{{ item.price }}
+            </li>
+          </ul>
+        </td>
+        <td>
           <select
             class="form-select form-select-sm"
             [(ngModel)]="order.status"
@@ -93,9 +103,5 @@
       </tr>
     </tbody>
   </table>
-
-  <div *ngIf="orders && orders.length === 0" class="alert alert-info">
-  No orders available.
-</div>
-
+  <div *ngIf="orders && orders.length === 0" class="alert alert-info">No orders available.</div>
 </div>

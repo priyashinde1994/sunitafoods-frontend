@@ -118,6 +118,7 @@ export class CartCheckoutComponent implements OnInit {
     const payload = {
       fullName: defaultAddress.fullName,
       email: defaultAddress.email,
+      phone: defaultAddress.phone, // ✅ include phone
       address:
         defaultAddress.addressLine1 +
         (defaultAddress.addressLine2 ? ' ' + defaultAddress.addressLine2 : ''),

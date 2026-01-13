@@ -1,5 +1,3 @@
-// order.model.ts
-
 export interface OrderItem {
   productId: number;
   productName: string;
@@ -14,9 +12,10 @@ export interface Order {
   paymentMethod: string;
   fullName: string;
   email: string;
+  phone: string; // ✅ add here
   address: string;
   city: string;
   zip: string;
-  createdAt: string;   // ISO date string
-  items: OrderItem[];
+  createdAt: string;
+  items: OrderItem[];   // ✅ include items
 }
