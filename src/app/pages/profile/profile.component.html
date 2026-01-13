@@ -2,9 +2,15 @@
 <nav class="navbar navbar-expand-lg navbar-custom">
   <div class="container-fluid">
     <a class="navbar-brand" routerLink="/">Sunita Foods</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-      data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false"
-      aria-label="Toggle navigation">
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarNav"
+      aria-controls="navbarNav"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
@@ -51,14 +57,17 @@
     <!-- Saved Addresses -->
     <h3>🏠 Saved Addresses</h3>
     <div *ngIf="addresses$ | async as addresses">
-      <div *ngFor="let addr of addresses" 
-           class="address-card mb-3 p-3 border rounded" 
-           [class.border-success]="addr.isDefault" 
-           [class.bg-light]="addr.isDefault">
-
+      <div
+        *ngFor="let addr of addresses"
+        class="address-card mb-3 p-3 border rounded"
+        [class.border-success]="addr.isDefault"
+        [class.bg-light]="addr.isDefault"
+      >
         <div class="d-flex justify-content-between align-items-center">
           <div>
-            <p class="mb-1"><strong>{{ addr.fullName }}</strong> - {{ addr.phone }}</p>
+            <p class="mb-1">
+              <strong>{{ addr.fullName }}</strong> - {{ addr.phone }}
+            </p>
             <p class="mb-1">{{ addr.addressLine1 }} {{ addr.addressLine2 }}</p>
             <p class="mb-1">{{ addr.city }}, {{ addr.state }} {{ addr.zipcode }}</p>
             <p class="mb-1">{{ addr.country }}</p>
@@ -68,10 +77,11 @@
           </div>
 
           <div class="text-end">
-            <button 
-              (click)="setDefaultAddress(addr)" 
-              class="btn btn-primary me-2" 
-              [disabled]="addr.isDefault">
+            <button
+              (click)="setDefaultAddress(addr)"
+              class="btn btn-primary me-2"
+              [disabled]="addr.isDefault"
+            >
               Set Default
             </button>
             <button (click)="deleteAddress(addr.id)" class="btn btn-danger">Delete</button>
@@ -83,14 +93,63 @@
     <!-- Add New Address Form -->
     <h4>Add New Address</h4>
     <form [formGroup]="addressForm" (ngSubmit)="addAddress()" class="address-form">
-      <input formControlName="fullName" placeholder="Full Name" class="form-control mb-2">
-      <input formControlName="phone" placeholder="Phone" class="form-control mb-2">
-      <input formControlName="addressLine1" placeholder="Address Line 1" class="form-control mb-2">
-      <input formControlName="addressLine2" placeholder="Address Line 2" class="form-control mb-2">
-      <input formControlName="city" placeholder="City" class="form-control mb-2">
-      <input formControlName="state" placeholder="State" class="form-control mb-2">
-      <input formControlName="zipcode" placeholder="ZIP Code" class="form-control mb-2">
-      <input formControlName="country" placeholder="Country" class="form-control mb-2">
+      <input formControlName="fullName" placeholder="Full Name" class="form-control mb-2" />
+      <input
+        formControlName="phone"
+        placeholder="Phone"
+        class="form-control mb-2"
+        maxlength="10"
+        inputmode="numeric"
+        (input)="addressForm.get('phone')?.setValue(addressForm.get('phone')?.value.replace(/\D/g,''))"
+      />
+
+      <!-- Error message -->
+      <div
+        class="text-danger"
+        *ngIf="addressForm.get('phone')?.invalid && addressForm.get('phone')?.touched"
+      >
+        Phone must be 10 digits, starting with 6–9.
+      </div>
+
+      <input
+        formControlName="addressLine1"
+        placeholder="Address Line 1"
+        class="form-control mb-2"
+      />
+      <input
+        formControlName="addressLine2"
+        placeholder="Address Line 2"
+        class="form-control mb-2"
+      />
+
+      <!-- State Dropdown -->
+      <select formControlName="state" class="form-control mb-2" (change)="onStateChange($event)">
+        <option value="">-- Select State --</option>
+        <option *ngFor="let st of states" [value]="st">{{ st }}</option>
+      </select>
+
+      <!-- City Dropdown -->
+      <select formControlName="city" class="form-control mb-2" (change)="onCityChange($event)">
+        <option value="">-- Select City --</option>
+        <option *ngFor="let ct of cities" [value]="ct">{{ ct }}</option>
+      </select>
+
+      <!-- Hometown Dropdown -->
+      <select
+        formControlName="hometown"
+        class="form-control mb-2"
+        (change)="onHometownChange($event)"
+      >
+        <option value="">-- Select Hometown --</option>
+        <option *ngFor="let ht of hometowns" [value]="ht">{{ ht }}</option>
+      </select>
+
+      <!-- Auto-filled ZIP -->
+      <input formControlName="zipcode" placeholder="ZIP Code" class="form-control mb-2" readonly />
+
+      <!-- Static Country -->
+      <input formControlName="country" class="form-control mb-2" readonly />
+
       <button type="submit" class="btn btn-success">Add Address</button>
     </form>
 

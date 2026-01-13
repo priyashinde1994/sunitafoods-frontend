@@ -20,6 +20,7 @@ export class RegisterComponent {
   phone = '';
   error: string = '';
   success: string = '';
+  validationMessage = '';
 
   constructor(
     private auth: AuthService,
@@ -28,14 +29,42 @@ export class RegisterComponent {
   ) {}
 
   onSubmit() {
+    this.validationMessage = '';
     this.error = '';
     this.success = '';
 
+    // Manual validation (extra safety)
+    if (!this.name || this.name.trim().length < 2) {
+      this.validationMessage = '⚠️ Name must be at least 2 characters.';
+      return;
+    }
+
+    const emailRegex = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
+    if (!emailRegex.test(this.email)) {
+      this.validationMessage = '⚠️ Please enter a valid email address.';
+      return;
+    }
+
+    const passwordRegex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&]).{8,}$/;
+    if (!passwordRegex.test(this.password)) {
+      this.validationMessage =
+        '⚠️ Password must be 8+ chars, include uppercase, lowercase, number, and special character.';
+      return;
+    }
+
+    const phoneRegex = /^[6-9]\d{9}$/;
+    if (!phoneRegex.test(this.phone)) {
+      this.validationMessage =
+        '⚠️ Enter a valid 10-digit mobile number starting with 6–9.';
+      return;
+    }
+
+    // ✅ Submit if all validations pass
     const payload = {
       name: this.name,
       email: this.email,
       password: this.password,
-      phone: this.phone
+      phone: this.phone,
     };
 
     this.auth.register(payload).subscribe({
@@ -44,7 +73,7 @@ export class RegisterComponent {
         this.snackBar.open(this.success, 'Close', {
           duration: 3000,
           horizontalPosition: 'right',
-          verticalPosition: 'top'
+          verticalPosition: 'top',
         });
         this.router.navigate(['/login']);
       },
@@ -53,9 +82,9 @@ export class RegisterComponent {
         this.snackBar.open(this.error, 'Close', {
           duration: 3000,
           horizontalPosition: 'right',
-          verticalPosition: 'top'
+          verticalPosition: 'top',
         });
-      }
+      },
     });
   }
 }

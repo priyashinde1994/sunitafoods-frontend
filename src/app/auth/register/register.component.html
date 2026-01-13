@@ -2,26 +2,92 @@
   <div class="card mx-auto">
     <div class="card-body">
       <h5 class="card-title">Register</h5>
+
+      <!-- Global error/success messages -->
       <div class="text-danger mb-2" *ngIf="error">{{ error }}</div>
       <div class="text-success mb-2" *ngIf="success">{{ success }}</div>
-      <form (ngSubmit)="onSubmit()">
+
+      <form (ngSubmit)="onSubmit()" #registerForm="ngForm" novalidate autocomplete="off">
+        <!-- Name -->
         <div class="mb-3">
           <label>Name</label>
-          <input [(ngModel)]="name" name="name" class="form-control" required>
+          <input
+            [(ngModel)]="name"
+            name="name"
+            class="form-control"
+            required
+            minlength="2"
+            autocomplete="off"
+            #nameCtrl="ngModel"
+          />
+          <div class="text-danger" *ngIf="nameCtrl.invalid && nameCtrl.touched">
+            Name must be at least 2 characters.
+          </div>
         </div>
+
+        <!-- Email -->
         <div class="mb-3">
           <label>Email</label>
-          <input [(ngModel)]="email" name="email" class="form-control" required>
+          <input
+            [(ngModel)]="email"
+            name="email"
+            class="form-control"
+            required
+            email
+            autocomplete="off"
+            #emailCtrl="ngModel"
+          />
+          <div class="text-danger" *ngIf="emailCtrl.invalid && emailCtrl.touched">
+            Please enter a valid email address.
+          </div>
         </div>
+
+        <!-- Password -->
         <div class="mb-3">
           <label>Password</label>
-          <input [(ngModel)]="password" name="password" type="password" class="form-control" required>
+          <input
+            [(ngModel)]="password"
+            name="password"
+            type="password"
+            class="form-control"
+            required
+            minlength="8"
+            pattern="^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&]).{8,}$"
+            autocomplete="new-password"
+            #passwordCtrl="ngModel"
+          />
+          <div class="text-danger" *ngIf="passwordCtrl.invalid && passwordCtrl.touched">
+            Password must be 8+ chars, include uppercase, lowercase, number, and special character.
+          </div>
         </div>
         <div class="mb-3">
           <label>Mobile Number</label>
-          <input [(ngModel)]="phone" name="phone" type="tel" class="form-control" required>
+          <div class="input-group">
+            <span class="input-group-text">+91</span>
+            <input
+              [(ngModel)]="phone"
+              name="phone"
+              type="tel"
+              class="form-control"
+              required
+              maxlength="10"
+              inputmode="numeric"
+              autocomplete="off"
+              (input)="phone = phone.replace(/\D/g, '')"
+              #phoneCtrl="ngModel"
+            />
+          </div>
+          <div class="text-danger" *ngIf="phoneCtrl.invalid && phoneCtrl.touched">
+            Enter a valid 10‑digit mobile number starting with 6–9.
+          </div>
         </div>
-        <button class="btn btn-success w-100">Register</button>
+
+        <!-- Validation summary (manual checks on submit) -->
+        <div class="text-danger mb-2" *ngIf="validationMessage">
+          {{ validationMessage }}
+        </div>
+
+        <button class="btn btn-success w-100" [disabled]="registerForm.invalid">Register</button>
       </form>
     </div>
   </div>

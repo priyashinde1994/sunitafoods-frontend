@@ -120,7 +120,7 @@ filteredOrders(): Order[] {
     const createdAt = new Date(order.createdAt);
 
     const fromOk = !this.filters.createdFrom || createdAt >= new Date(this.filters.createdFrom);
-    const toOk   = !this.filters.createdTo   || createdAt <= new Date(this.filters.createdTo);
+    const toOk   = !this.filters.createdTo   || createdAt <= this.endOfDay(this.filters.createdTo);
 
     return (
       (!this.filters.id || order.id.toString().includes(this.filters.id)) &&
@@ -133,6 +133,13 @@ filteredOrders(): Order[] {
       fromOk && toOk
     );
   });
+}
+
+// helper
+endOfDay(dateStr: string): Date {
+  const d = new Date(dateStr);
+  d.setHours(23, 59, 59, 999);
+  return d;
 }
 
 }
