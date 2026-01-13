@@ -49,7 +49,6 @@
         <th>Customer</th>
         <th>Email</th>
         <th>Phone</th>
-        <!-- ✅ new column -->
         <th>Total Amount</th>
         <th>Status</th>
         <th>Created At</th>
@@ -57,14 +56,86 @@
         <th>Items</th>
         <th>Change Status</th>
       </tr>
+      <!-- ✅ Filter row -->
+      <tr>
+        <th>
+          <input
+            class="form-control form-control-sm"
+            [(ngModel)]="filters.id"
+            placeholder="Filter ID"
+          />
+        </th>
+        <th>
+          <input
+            class="form-control form-control-sm"
+            [(ngModel)]="filters.fullName"
+            placeholder="Filter Customer"
+          />
+        </th>
+        <th>
+          <input
+            class="form-control form-control-sm"
+            [(ngModel)]="filters.email"
+            placeholder="Filter Email"
+          />
+        </th>
+        <th>
+          <input
+            class="form-control form-control-sm"
+            [(ngModel)]="filters.phone"
+            placeholder="Filter Phone"
+          />
+        </th>
+        <th>
+          <input
+            class="form-control form-control-sm"
+            [(ngModel)]="filters.totalAmount"
+            placeholder="Filter Amount"
+          />
+        </th>
+        <th>
+          <select class="form-select form-select-sm" [(ngModel)]="filters.status">
+            <option value="">All</option>
+            <option value="PENDING_COD">PENDING_COD</option>
+            <option value="OUT_FOR_DISPATCH">OUT_FOR_DISPATCH</option>
+            <option value="DELIVERED">DELIVERED</option>
+            <option value="CANCELLED">CANCELLED</option>
+          </select>
+        </th>
+        <th>
+          <div class="d-flex flex-column">
+            <input
+              type="date"
+              class="form-control form-control-sm mb-1"
+              [(ngModel)]="filters.createdFrom"
+              placeholder="From"
+            />
+            <input
+              type="date"
+              class="form-control form-control-sm"
+              [(ngModel)]="filters.createdTo"
+              placeholder="To"
+            />
+          </div>
+        </th>
+
+        <th>
+          <input
+            class="form-control form-control-sm"
+            [(ngModel)]="filters.address"
+            placeholder="Filter Address"
+          />
+        </th>
+        <th></th>
+        <th></th>
+      </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let order of orders">
+      <tr *ngFor="let order of pagedOrders()">
         <td>{{ order.id }}</td>
         <td>{{ order.fullName }}</td>
         <td>{{ order.email }}</td>
         <td>{{ order.phone }}</td>
-        <!-- ✅ display phone -->
         <td>₹{{ order.totalAmount }}</td>
         <td>
           <span
@@ -82,7 +153,7 @@
         <td>{{ order.createdAt | date : 'short' }}</td>
         <td>{{ order.address }}, {{ order.city }} - {{ order.zip }}</td>
         <td>
-          <ul *ngIf="order.items.length>0">
+          <ul *ngIf="order.items.length > 0">
             <li *ngFor="let item of order.items">
               {{ item.productName }} — Qty: {{ item.quantity }} — ₹{{ item.price }}
             </li>
@@ -103,5 +174,33 @@
       </tr>
     </tbody>
   </table>
+  <div class="d-flex justify-content-between align-items-center mt-2" *ngIf="totalPages > 1">
+    <button
+      class="btn btn-sm btn-outline-primary"
+      (click)="goToPage(currentPage - 1)"
+      [disabled]="currentPage === 1"
+    >
+      ◀ Prev
+    </button>
+
+    <span>Page {{ currentPage }} of {{ totalPages }}</span>
+
+    <button
+      class="btn btn-sm btn-outline-primary"
+      (click)="goToPage(currentPage + 1)"
+      [disabled]="currentPage === totalPages"
+    >
+      Next ▶
+    </button>
+  </div>
+  <div class="mt-2">
+    <label>Rows per page:</label>
+    <select [(ngModel)]="pageSize" class="form-select form-select-sm w-auto d-inline-block">
+      <option [value]="5">5</option>
+      <option [value]="10">10</option>
+      <option [value]="20">20</option>
+    </select>
+  </div>
+
   <div *ngIf="orders && orders.length === 0" class="alert alert-info">No orders available.</div>
 </div>
